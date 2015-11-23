@@ -58,6 +58,7 @@ class Host extends Component {
     return (
       <Grid>
         <PageHeader>
+          <img className="pull-left" src="turkey.png" height="60" />
           Thanksgiving food list
           <Button className="pull-right" onClick={this.handleShare.bind(this)}>Invite guests</Button>
         </PageHeader>
