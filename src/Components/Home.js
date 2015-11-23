@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {
+  Grid,
   Button,
-  Jumbotron
+  Jumbotron,
+  PageHeader
 } from 'react-bootstrap';
 import { Link } from 'react-router';
 import Firebase from 'firebase';
@@ -29,7 +31,13 @@ export default class Home extends Component {
   }
   render() {
     return (
-      <Button onClick={this.handleClick.bind(this)}>Hosting Thanksgiving?</Button>
+      <Grid>
+        <PageHeader>
+          <img className="pull-left" src="turkey.png" height="60" />
+          Thanksgiving food list
+          <Button className="pull-right" onClick={this.handleClick.bind(this)}>Hosting Thanksgiving?</Button>
+        </PageHeader>
+      </Grid>
     );
   }
 }
