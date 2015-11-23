@@ -11,9 +11,6 @@
     "type": "git",
     "url": "https://github.com/gaearon/react-hot-boilerplate.git"
   },
-  "pre-commit": [
-    "deploy"
-  ],
   "keywords": [
     "react",
     "reactjs",
@@ -45,7 +42,6 @@
     "jsx-loader": "^0.13.2",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
-    "pre-commit": "^1.1.2",
     "react-hot-loader": "^1.3.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
