@@ -30,7 +30,6 @@ class Host extends Component {
     });
   }
   handleSubmit() {
-    console.log();
     const name = firebase.getAuth().facebook.cachedUserProfile.first_name;
     this.props.firebase.child('dishes').push({
       name: name,
@@ -40,8 +39,15 @@ class Host extends Component {
       input: null
     });
   }
+  handleShare(e) {
+    e.preventDefault();
+    FB.ui({
+      method: 'send',
+      link: window.location.href,
+    });
+  }
   handleRemoveDish(key, e) {
-    console.log('handleRemoveDish', key);
+    e.preventDefault();
     this.props.firebase.child('dishes').child(key).remove();
   }
   render() {
@@ -51,15 +57,18 @@ class Host extends Component {
     } = this.props;
     return (
       <Grid>
-        <PageHeader>Thanksgiving food list</PageHeader>
+        <PageHeader>
+          Thanksgiving food list
+          <Button className="pull-right" onClick={this.handleShare.bind(this)}>Invite guests</Button>
+        </PageHeader>
         <h3>Hosted by {this.props.host}</h3>
         <ListGroup>
           {_.map(this.props.dishes, (dish, key) => (
             <ListGroupItem key={key}>
               {dish.dish} - {dish.name}
-              <a>
-                <Icon name="remove" remove className="pull-right" onClick={this.handleRemoveDish.bind(this, key)}/>
-              </a>
+              <Button className="pull-right" bsSize="xsmall" onClick={this.handleRemoveDish.bind(this, key)}>
+                <Icon name="remove" remove/>
+              </Button>
             </ListGroupItem>
           ))}
         </ListGroup>
