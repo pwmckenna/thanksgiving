@@ -96,7 +96,10 @@ Host.defaultProps = {
 
 Host.propTypes = {
   firebase: React.PropTypes.instanceOf(Firebase).isRequired,
-  host: React.PropTypes.string.isRequired,
+  host: React.PropTypes.shape({
+    first_name: React.PropTypes.string.isRequired,
+    id: React.PropTypes.number.isRequired
+  }).isRequired,
   dishes: React.PropTypes.objectOf(React.PropTypes.shape({
     name: React.PropTypes.string.isRequired,
     dish: React.PropTypes.string.isRequired
