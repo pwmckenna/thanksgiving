@@ -16,7 +16,7 @@ function requireAuth(nextState, replaceState, callback) {
   if (firebase.getAuth()) {
     setTimeout(callback, 1);
   } else {
-    firebase.authWithOAuthPopup("facebook", callback);
+    firebase.authWithOAuthPopup('facebook', callback);
   }
 }
 

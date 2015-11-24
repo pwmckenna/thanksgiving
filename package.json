@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "Boilerplate for ReactJS project with hot code reloading",
   "scripts": {
-    "start": "node server.js",
+    "start": "webpack-dev-server --config webpack.config.js",
     "lint": "eslint src",
     "deploy": "NODE_ENV=production webpack -p --config webpack.production.config.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaearon/react-hot-boilerplate.git"
+    "url": "https://github.com/pwmckenna/thanksgiving.git"
   },
   "keywords": [
     "react",
@@ -22,12 +22,12 @@
     "edit",
     "webpack"
   ],
-  "author": "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)",
+  "author": "Patrick Williams",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gaearon/react-hot-boilerplate/issues"
+    "url": "https://github.com/pwmckenna/thanksgiving/issues"
   },
-  "homepage": "https://github.com/gaearon/react-hot-boilerplate",
+  "homepage": "https://github.com/pwmckenna/thanksgiving",
   "devDependencies": {
     "babel-core": "^6.0.20",
     "babel-eslint": "^4.1.3",
@@ -36,6 +36,8 @@
     "babel-preset-react": "^6.0.15",
     "babel-preset-stage-0": "^6.0.15",
     "css-loader": "^0.23.0",
+    "eslint": "^1.10.1",
+    "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.6.2",
     "extract-text-webpack-plugin": "^0.9.1",
     "file-loader": "^0.8.4",

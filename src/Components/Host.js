@@ -12,9 +12,6 @@ import {
   ListGroup,
   ListGroupItem
 } from 'react-bootstrap';
-import {
-  Link
-} from 'react-router';
 import Firebase from 'firebase';
 
 const firebase = new Firebase('https://turkeylist.firebaseio.com/');
@@ -30,10 +27,9 @@ class Host extends Component {
     });
   }
   handleSubmit() {
-    const name = firebase.getAuth().facebook.cachedUserProfile.first_name;
     this.props.firebase.child('dishes').push({
-      name: name,
-      dish: this.state.input
+      guest: firebase.getAuth().facebook.cachedUserProfile,
+      name: this.state.input
     });
     this.setState({
       input: null
@@ -43,7 +39,7 @@ class Host extends Component {
     e.preventDefault();
     FB.ui({
       method: 'send',
-      link: window.location.href,
+      link: window.location.href
     });
   }
   handleRemoveDish(key, e) {
@@ -51,10 +47,6 @@ class Host extends Component {
     this.props.firebase.child('dishes').child(key).remove();
   }
   render() {
-    const {
-      firebase,
-      ...props
-    } = this.props;
     return (
       <Grid>
         <PageHeader>
@@ -62,14 +54,16 @@ class Host extends Component {
           Thanksgiving food list
           <Button className="pull-right" onClick={this.handleShare.bind(this)}>Invite guests</Button>
         </PageHeader>
-        <h3>Hosted by {this.props.host}</h3>
+        <h3>Hosted by {this.props.host.first_name}</h3>
         <ListGroup>
           {_.map(this.props.dishes, (dish, key) => (
             <ListGroupItem key={key}>
-              {dish.dish} - {dish.name}
-              <Button className="pull-right" bsSize="xsmall" onClick={this.handleRemoveDish.bind(this, key)}>
-                <Icon name="remove" remove/>
-              </Button>
+              {dish.name} - {dish.guest.first_name}
+              {firebase.getAuth().facebook.cachedUserProfile.id === dish.guest.id ? (
+                <Button className="pull-right" bsSize="xsmall" onClick={this.handleRemoveDish.bind(this, key)}>
+                  <Icon name="remove" remove/>
+                </Button>
+              ) : null}
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -109,7 +103,7 @@ Host.propTypes = {
   }))
 };
 
-export default class FirebaseHost extends Component {
+class FirebaseHost extends Component {
   constructor() {
     super();
     this.state = {
@@ -117,7 +111,7 @@ export default class FirebaseHost extends Component {
     };
   }
   componentDidMount() {
-    firebase.child(this.props.params.host).on('value', function (snapshot) {
+    firebase.child(this.props.params.host).on('value', function onValue(snapshot) {
       this.setState({
         value: snapshot.val()
       });
@@ -126,7 +120,7 @@ export default class FirebaseHost extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.host !== this.props.params.host) {
       firebase.child(this.props.params.host).off('value');
-      firebase.child(nextProps.params.host).on('value', function (snapshot) {
+      firebase.child(nextProps.params.host).on('value', function onValue(snapshot) {
         this.setState({
           value: snapshot.val()
         });
@@ -144,3 +138,11 @@ export default class FirebaseHost extends Component {
     ) : null;
   }
 }
+
+FirebaseHost.propTypes = {
+  params: React.PropTypes.shape({
+    host: React.PropTypes.string.isRequired
+  }).isRequired
+};
+
+export default FirebaseHost;
