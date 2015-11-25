@@ -42,6 +42,10 @@ class Host extends Component {
       link: window.location.href
     });
   }
+  handleLogout() {
+    this.props.firebase.unauth();
+    window.location.reload();
+  }
   handleRemoveDish(key, e) {
     e.preventDefault();
     this.props.firebase.child('dishes').child(key).remove();
@@ -52,6 +56,7 @@ class Host extends Component {
         <PageHeader>
           <img className="pull-left" src="turkey.png" height="60" />
           Thanksgiving food list
+          <Button className="pull-right" onClick={this.handleLogout.bind(this)}>Logout</Button>
           <Button className="pull-right" onClick={this.handleShare.bind(this)}>Invite guests</Button>
         </PageHeader>
         <h3>Hosted by {this.props.host.first_name}</h3>
@@ -98,7 +103,7 @@ Host.propTypes = {
   firebase: React.PropTypes.instanceOf(Firebase).isRequired,
   host: React.PropTypes.shape({
     first_name: React.PropTypes.string.isRequired,
-    id: React.PropTypes.number.isRequired
+    id: React.PropTypes.string.isRequired
   }).isRequired,
   dishes: React.PropTypes.objectOf(React.PropTypes.shape({
     name: React.PropTypes.string.isRequired,
@@ -114,20 +119,20 @@ class FirebaseHost extends Component {
     };
   }
   componentDidMount() {
-    firebase.child(this.props.params.host).on('value', function onValue(snapshot) {
+    firebase.child(this.props.params.host).on('value', (snapshot) => {
       this.setState({
         value: snapshot.val()
       });
-    }.bind(this));
+    });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.host !== this.props.params.host) {
       firebase.child(this.props.params.host).off('value');
-      firebase.child(nextProps.params.host).on('value', function onValue(snapshot) {
+      firebase.child(nextProps.params.host).on('value', (snapshot) => {
         this.setState({
           value: snapshot.val()
         });
-      }.bind(this));
+      });
     }
   }
   componentWillUnmount() {
